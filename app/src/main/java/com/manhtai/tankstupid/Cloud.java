@@ -11,7 +11,7 @@ public class Cloud {
     int x,y,width,height;
     Bitmap[] cloud;
     Random random;
-    int type;
+    int type = 0;
     int speed = 5;
     private static final String TAG = "Cloud";
     Cloud(Resources resources,int screenX,int screenY){
@@ -24,14 +24,12 @@ public class Cloud {
             width = screenX/2;
             height = screenY/5;
             cloud[i] = Bitmap.createScaledBitmap(cloud[i],width,height,false);
-            Log.d(TAG, "Cloud: create cloud" + i);
         }
         x = screenX + width;
         y = screenY/4;
     }
 
     public Bitmap getCloud() {
-        Log.d(TAG, "getCloud: " +type);
         if(type == 0) return cloud[0];
         if(type == 1) return cloud[1];
         return cloud[2];

@@ -3,6 +3,7 @@ package com.manhtai.tankstupid;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,10 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 public class GameActivity extends AppCompatActivity {
 
     GameView gameView;
-
+    AdView adView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,30 +30,50 @@ public class GameActivity extends AppCompatActivity {
         getDisplay().getSize(point);
         gameView = new GameView(this,point.x,point.y);
 
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, 100);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        adView = new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
 
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(gameView);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        adView.setLayoutParams(lp);
 
         RelativeLayout layout = new RelativeLayout(this);
-        linearLayout.addView(layout);
+        layout.addView(gameView);
+        layout.addView(adView);
+        layout.setFocusable(true);
+        layout.setFocusableInTouchMode(true);
 
-        setContentView(linearLayout);
+        setContentView(layout);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+        gameView.setVisibility(View.VISIBLE);
         gameView.resume();
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
+        gameView.setVisibility(View.GONE);
         gameView.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
     }
 }

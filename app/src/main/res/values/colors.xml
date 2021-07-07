@@ -8,5 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#48EAFF</color>
+    <array name="light">
+        <item>#48EAFF</item>
+        <item>#45DCEF</item>
+        <item>#40CDDF</item>
+        <item>#39B3C3</item>
+        <item>#2F98A5</item>
+        <item>#267680</item>
+        <item>#1E5961</item>
+    </array>
 
 </resources>

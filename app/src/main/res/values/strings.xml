@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tank Stupid</string>
+    <string name="APPLICATION_ID_ADMOB">ca-app-pub-2491867204273509~4686241234</string>
+    <string name="AD_VIEW_ID">ca-app-pub-2491867204273509/2777181625</string>
 </resources>
